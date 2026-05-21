@@ -1,0 +1,15 @@
+[package]
+name = "technical_analysis"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+rust_decimal = { version = "1.35", features = ["maths"], optional = true }
+
+[dev-dependencies]
+
+[features]
+default = []
+precision = ["rust_decimal"]
+unsafe = []
