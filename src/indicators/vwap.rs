@@ -26,7 +26,12 @@ impl Default for VolumeWeightedAveragePrice {
 }
 
 impl Indicator for VolumeWeightedAveragePrice {
-    type Input = (IndicatorValue, IndicatorValue, IndicatorValue, IndicatorValue);
+    type Input = (
+        IndicatorValue,
+        IndicatorValue,
+        IndicatorValue,
+        IndicatorValue,
+    );
     type Output = IndicatorValue;
 
     #[inline]

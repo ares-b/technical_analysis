@@ -20,7 +20,11 @@ impl Default for ParabolicSAR {
 
 impl ParabolicSAR {
     #[inline]
-    pub fn new(acceleration_factor: f64, max_acceleration_factor: f64, initialization_period: usize) -> ParabolicSAR {
+    pub fn new(
+        acceleration_factor: f64,
+        max_acceleration_factor: f64,
+        initialization_period: usize,
+    ) -> ParabolicSAR {
         let initial_af = IndicatorValue::from(acceleration_factor);
         ParabolicSAR {
             sar: IndicatorValue::from(0.0),

@@ -1,15 +1,17 @@
 #[cfg(test)]
 mod tests {
-    use technical_analysis::indicators::{Indicator, ChandeMomentumOscillator};
+    use technical_analysis::indicators::{ChandeMomentumOscillator, Indicator};
     use technical_analysis::IndicatorValue;
 
     #[test]
     fn test_cmo_next() {
         let mut cmo = ChandeMomentumOscillator::new(14);
-        let data = vec![1.0, 2.0, 3.0, 2.5, 3.5, 2.7, 3.8, 2.6, 3.7, 2.9, 3.6, 2.8, 3.9, 2.7]
-            .into_iter()
-            .map(IndicatorValue::from)
-            .collect::<Vec<_>>();
+        let data = vec![
+            1.0, 2.0, 3.0, 2.5, 3.5, 2.7, 3.8, 2.6, 3.7, 2.9, 3.6, 2.8, 3.9, 2.7,
+        ]
+        .into_iter()
+        .map(IndicatorValue::from)
+        .collect::<Vec<_>>();
 
         let result = cmo.next_chunk(&data);
 
@@ -42,7 +44,8 @@ mod tests {
     #[test]
     fn test_cmo_with_increasing_prices() {
         let mut cmo = ChandeMomentumOscillator::new(14);
-        let prices: Vec<IndicatorValue> = (1..=14).map(|x| IndicatorValue::from(x as f64)).collect();
+        let prices: Vec<IndicatorValue> =
+            (1..=14).map(|x| IndicatorValue::from(x as f64)).collect();
 
         let result = cmo.next_chunk(&prices).unwrap();
         assert!(result.round_dp(2) > IndicatorValue::from(0.0));
@@ -51,7 +54,10 @@ mod tests {
     #[test]
     fn test_cmo_with_decreasing_prices() {
         let mut cmo = ChandeMomentumOscillator::new(14);
-        let prices: Vec<IndicatorValue> = (1..=14).rev().map(|x| IndicatorValue::from(x as f64)).collect();
+        let prices: Vec<IndicatorValue> = (1..=14)
+            .rev()
+            .map(|x| IndicatorValue::from(x as f64))
+            .collect();
 
         let result = cmo.next_chunk(&prices).unwrap();
         assert!(result.round_dp(2) < IndicatorValue::from(0.0)); // CMO should be negative with decreasing prices
@@ -60,10 +66,12 @@ mod tests {
     #[test]
     fn test_cmo_reset() {
         let mut cmo = ChandeMomentumOscillator::new(14);
-        let prices = vec![1.0, 2.0, 3.0, 2.5, 3.5, 2.7, 3.8, 2.6, 3.7, 2.9, 3.6, 2.8, 3.9, 2.7]
-            .into_iter()
-            .map(IndicatorValue::from)
-            .collect::<Vec<_>>();
+        let prices = vec![
+            1.0, 2.0, 3.0, 2.5, 3.5, 2.7, 3.8, 2.6, 3.7, 2.9, 3.6, 2.8, 3.9, 2.7,
+        ]
+        .into_iter()
+        .map(IndicatorValue::from)
+        .collect::<Vec<_>>();
 
         for price in prices {
             cmo.next(price);

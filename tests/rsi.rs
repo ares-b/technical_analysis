@@ -8,12 +8,14 @@ mod tests {
         let mut rsi = RelativeStrengthIndex::new(14);
 
         let prices = vec![
-            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 
-            45.89, 46.03, 45.61, 46.28, 46.28, 46.0, 45.75, 46.15, 46.35, 46.55, 46.55, 46.55, 46.55
-        ].into_iter().map(IndicatorValue::from).collect::<Vec<_>>();
+            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 45.89, 46.03,
+            45.61, 46.28, 46.28, 46.0, 45.75, 46.15, 46.35, 46.55, 46.55, 46.55, 46.55,
+        ]
+        .into_iter()
+        .map(IndicatorValue::from)
+        .collect::<Vec<_>>();
 
         for i in 0..prices.len() {
-            
             if i < 14 {
                 assert_eq!(rsi.next(prices[i]), None);
             } else {
@@ -38,16 +40,20 @@ mod tests {
     fn test_rsi_next_chunk() {
         let mut rsi = RelativeStrengthIndex::new(14);
         let prices = vec![
-            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 
-            45.89, 46.03, 45.61, 46.28
-        ].into_iter().map(IndicatorValue::from).collect::<Vec<_>>();
+            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 45.89, 46.03,
+            45.61, 46.28,
+        ]
+        .into_iter()
+        .map(IndicatorValue::from)
+        .collect::<Vec<_>>();
 
         let result = rsi.next_chunk(&prices);
         assert_eq!(result, None);
 
-        let more_prices = vec![
-            46.28, 46.0, 45.75, 46.15, 46.35, 46.55
-        ].into_iter().map(IndicatorValue::from).collect::<Vec<_>>();
+        let more_prices = vec![46.28, 46.0, 45.75, 46.15, 46.35, 46.55]
+            .into_iter()
+            .map(IndicatorValue::from)
+            .collect::<Vec<_>>();
 
         let result = rsi.next_chunk(&more_prices);
         assert_eq!(result.unwrap().round_dp(2), IndicatorValue::from(68.83));
@@ -57,9 +63,12 @@ mod tests {
     fn test_rsi_reset() {
         let mut rsi = RelativeStrengthIndex::new(14);
         let prices = vec![
-            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 
-            45.89, 46.03, 45.61, 46.28
-        ].into_iter().map(IndicatorValue::from).collect::<Vec<_>>();
+            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 45.89, 46.03,
+            45.61, 46.28,
+        ]
+        .into_iter()
+        .map(IndicatorValue::from)
+        .collect::<Vec<_>>();
 
         for price in prices {
             rsi.next(price);
@@ -86,20 +95,24 @@ mod tests {
     #[test]
     fn test_rsi_with_increasing_prices() {
         let mut rsi = RelativeStrengthIndex::new(14);
-        let prices: Vec<IndicatorValue> = (1..=20).map(|x| IndicatorValue::from(x as f64)).collect();
+        let prices: Vec<IndicatorValue> =
+            (1..=20).map(|x| IndicatorValue::from(x as f64)).collect();
 
         let mut result = None;
         for price in &prices {
             result = rsi.next(*price);
         }
-        
+
         assert_eq!(result.unwrap().round_dp(2), IndicatorValue::from(100.0));
     }
 
     #[test]
     fn test_rsi_with_decreasing_prices() {
         let mut rsi = RelativeStrengthIndex::new(14);
-        let prices: Vec<IndicatorValue> = (1..=20).rev().map(|x| IndicatorValue::from(x as f64)).collect();
+        let prices: Vec<IndicatorValue> = (1..=20)
+            .rev()
+            .map(|x| IndicatorValue::from(x as f64))
+            .collect();
 
         let mut result = None;
         for price in &prices {
@@ -114,7 +127,7 @@ mod tests {
         let price = IndicatorValue::from(50.0);
 
         let result = rsi.next(price);
-        assert_eq!(result, None);  // RSI should return None with only one data point
+        assert_eq!(result, None); // RSI should return None with only one data point
     }
 
     #[test]
@@ -161,9 +174,12 @@ mod tests {
     fn test_rsi_with_mixed_gains_and_losses() {
         let mut rsi = RelativeStrengthIndex::new(14);
         let prices = vec![
-            44.34, 43.09, 45.15, 43.61, 46.33, 44.83, 45.10, 45.42, 45.84, 44.08, 
-            45.89, 46.03, 45.61, 47.28, 46.28, 46.0, 45.75, 46.15
-        ].into_iter().map(IndicatorValue::from).collect::<Vec<_>>();
+            44.34, 43.09, 45.15, 43.61, 46.33, 44.83, 45.10, 45.42, 45.84, 44.08, 45.89, 46.03,
+            45.61, 47.28, 46.28, 46.0, 45.75, 46.15,
+        ]
+        .into_iter()
+        .map(IndicatorValue::from)
+        .collect::<Vec<_>>();
 
         let mut result = None;
 
@@ -177,7 +193,15 @@ mod tests {
     #[test]
     fn test_rsi_with_alternating_prices() {
         let mut rsi = RelativeStrengthIndex::new(14);
-        let prices: Vec<IndicatorValue> = (1..=20).map(|x| if x % 2 == 0 { IndicatorValue::from(50.0) } else { IndicatorValue::from(100.0) }).collect();
+        let prices: Vec<IndicatorValue> = (1..=20)
+            .map(|x| {
+                if x % 2 == 0 {
+                    IndicatorValue::from(50.0)
+                } else {
+                    IndicatorValue::from(100.0)
+                }
+            })
+            .collect();
         let mut result = None;
 
         for value in &prices {

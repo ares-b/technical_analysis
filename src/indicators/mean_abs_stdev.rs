@@ -38,7 +38,11 @@ impl Indicator for MeanAbsDev {
         if self.buffer.is_full() {
             let mean = self.sum * self.reciprocal_period;
             Some(
-                self.buffer.iter().map(|&value| (value - mean).abs()).sum::<IndicatorValue>() * self.reciprocal_period
+                self.buffer
+                    .iter()
+                    .map(|&value| (value - mean).abs())
+                    .sum::<IndicatorValue>()
+                    * self.reciprocal_period,
             )
         } else {
             None

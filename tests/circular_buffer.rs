@@ -63,7 +63,7 @@ mod tests {
         buffer.push(1.0.into());
         buffer.push(2.0.into());
         buffer.push(3.0.into());
-        
+
         let mut iter = buffer.iter();
         assert_eq!(iter.next(), Some(&3.0.into()));
         assert_eq!(iter.next(), Some(&2.0.into()));
@@ -125,5 +125,4 @@ mod tests {
         buffer.push(3.0.into());
         assert!(buffer.is_full());
     }
-
 }

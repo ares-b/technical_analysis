@@ -9,9 +9,18 @@ mod tests {
 
         assert_eq!(mad.next(IndicatorValue::from(10.0)), None);
         assert_eq!(mad.next(IndicatorValue::from(20.0)), None);
-        assert_eq!(mad.next(IndicatorValue::from(30.0)).unwrap().round_dp(2), 10.0.into());
-        assert_eq!(mad.next(IndicatorValue::from(40.0)).unwrap().round_dp(2), 10.0.into());
-        assert_eq!(mad.next(IndicatorValue::from(50.0)).unwrap().round_dp(2), 10.0.into());
+        assert_eq!(
+            mad.next(IndicatorValue::from(30.0)).unwrap().round_dp(2),
+            10.0.into()
+        );
+        assert_eq!(
+            mad.next(IndicatorValue::from(40.0)).unwrap().round_dp(2),
+            10.0.into()
+        );
+        assert_eq!(
+            mad.next(IndicatorValue::from(50.0)).unwrap().round_dp(2),
+            10.0.into()
+        );
     }
 
     #[test]

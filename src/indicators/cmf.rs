@@ -29,7 +29,12 @@ impl Default for ChaikinMoneyFlow {
 }
 
 impl Indicator for ChaikinMoneyFlow {
-    type Input = (IndicatorValue, IndicatorValue, IndicatorValue, IndicatorValue);
+    type Input = (
+        IndicatorValue,
+        IndicatorValue,
+        IndicatorValue,
+        IndicatorValue,
+    );
     type Output = Option<IndicatorValue>;
 
     #[inline]

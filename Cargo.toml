@@ -3,9 +3,13 @@ name = "technical_analysis"
 version = "0.0.0"
 edition = "2021"
 
+[lib]
+crate-type = ["rlib", "cdylib"]
+
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
 rust_decimal = { version = "1.35", features = ["maths"], optional = true }
+pyo3   = { version = "0.22.6", optional = true, features = ["extension-module", "abi3-py39"] }
+numpy  = { version = "0.22",   optional = true }
 
 [dev-dependencies]
 
@@ -13,3 +17,4 @@ rust_decimal = { version = "1.35", features = ["maths"], optional = true }
 default = []
 precision = ["rust_decimal"]
 unsafe = []
+python = ["dep:pyo3", "dep:numpy"]

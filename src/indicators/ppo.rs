@@ -1,4 +1,4 @@
-use crate::indicators::{Indicator, ExponentialMovingAverage};
+use crate::indicators::{ExponentialMovingAverage, Indicator};
 use crate::IndicatorValue;
 
 pub struct PercentagePriceOscillator {
@@ -44,11 +44,13 @@ impl Indicator for PercentagePriceOscillator {
             (Some(short_value), Some(long_value)) => {
                 let ppo_value = ((short_value - long_value) / long_value) * 100.0.into();
 
-                self.signal_ema.next(ppo_value).map(|signal_value| PPOOutput {
-                    ppo_value,
-                    signal_value,
-                    histogram_value: ppo_value - signal_value,
-                })
+                self.signal_ema
+                    .next(ppo_value)
+                    .map(|signal_value| PPOOutput {
+                        ppo_value,
+                        signal_value,
+                        histogram_value: ppo_value - signal_value,
+                    })
             }
             _ => None,
         }

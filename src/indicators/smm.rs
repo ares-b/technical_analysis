@@ -1,5 +1,5 @@
-use crate::CircularBuffer;
 use crate::indicators::Indicator;
+use crate::CircularBuffer;
 use crate::IndicatorValue;
 
 #[derive(Debug, Clone)]
@@ -25,7 +25,6 @@ impl SimpleMovingMedian {
             median_index_1: median_index.saturating_sub(is_even as usize),
         }
     }
-
 }
 
 impl Indicator for SimpleMovingMedian {
@@ -34,7 +33,6 @@ impl Indicator for SimpleMovingMedian {
 
     #[inline]
     fn next(&mut self, input: Self::Input) -> Self::Output {
-        
         let old_value = self.buffer.push(input);
 
         if let Some(old_value) = old_value {

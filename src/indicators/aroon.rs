@@ -66,7 +66,8 @@ impl Aroon {
 
     #[inline]
     fn recalculate_highest(&mut self) {
-        let (index, max_value) = self.high_buffer
+        let (index, max_value) = self
+            .high_buffer
             .iter()
             .copied()
             .enumerate()
@@ -79,7 +80,8 @@ impl Aroon {
 
     #[inline]
     fn recalculate_lowest(&mut self) {
-        let (index, min_value) = self.low_buffer
+        let (index, min_value) = self
+            .low_buffer
             .iter()
             .copied()
             .enumerate()
@@ -112,8 +114,12 @@ impl Indicator for Aroon {
         }
 
         Some(AroonOutput {
-            aroon_up: IndicatorValue::from(self.period - self.current_highest_index) * self.period_reciprocal * IndicatorValue::from(100.0),
-            aroon_down: IndicatorValue::from(self.period - self.current_lowest_index)  * self.period_reciprocal * IndicatorValue::from(100.0),
+            aroon_up: IndicatorValue::from(self.period - self.current_highest_index)
+                * self.period_reciprocal
+                * IndicatorValue::from(100.0),
+            aroon_down: IndicatorValue::from(self.period - self.current_lowest_index)
+                * self.period_reciprocal
+                * IndicatorValue::from(100.0),
         })
     }
 
