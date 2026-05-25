@@ -179,7 +179,7 @@ create_bench!(
 );
 create_bench!(
     bench_bollinger_bands,
-    BollingerBands::new(20, 2),
+    BollingerBands::new(20, 2.0),
     generate_random_data(12345, 1000)
 );
 create_bench!(
@@ -214,7 +214,7 @@ create_bench!(
 );
 create_bench!(
     bench_keltner_channels,
-    KeltnerChannels::new(20, 10, 2),
+    KeltnerChannels::new(20, 10, 2.0),
     generate_tuple_data3(12345, 1000)
 );
 create_bench!(
