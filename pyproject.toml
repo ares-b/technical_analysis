@@ -1,0 +1,17 @@
+[build-system]
+requires = ["maturin>=1.6,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "technical_analysis"
+version = "0.0.0"
+description = "Technical analysis indicators implemented in Rust with PyO3 bindings."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "numpy>=1.23"]
+
+[tool.maturin]
+features = ["python"]

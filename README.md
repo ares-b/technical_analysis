@@ -32,13 +32,31 @@ for price in prices {
 
 Indicators return `None` until warmed up, then `Some` on every call after that.
 
-To process a batch, use `next_chunk`. Equivalent to calling `next` in a loop and returning the last result:
+`next_chunk` feeds a whole slice and returns the output of the last bar. Call `reset()` to clear state without re-allocating.
 
 ```rust
 let result = sma.next_chunk(&candles);
 ```
 
-Call `reset()` to clear state without re-allocating.
+## Python bindings (PyO3)
+
+This crate includes optional Python bindings behind the `python` feature.
+
+Build/install in a virtualenv with `maturin`:
+
+```bash
+pip install maturin
+maturin develop --features python
+```
+
+Then from Python:
+
+```python
+import technical_analysis as ta
+
+sma = ta.SimpleMovingAverage(20)
+print(sma.next(100.0))
+```
 
 ## Indicators
 
@@ -55,7 +73,7 @@ Call `reset()` to clear state without re-allocating.
 | `ChandeMomentumOscillator` | price | `Option<f>` |
 | `OnBalanceVolume` | (close, volume) | `f` |
 | `AverageTrueRange` | (high, low, close) | `Option<f>` |
-| `BollingerBands` | price | `Option<(upper, lower)>` |
+| `BollingerBands` | price | `Option<(upper, mid, lower)>` |
 | `MovingAverageConvergenceDivergence` | price | `Option<(macd, signal, hist)>` |
 | `PercentagePriceOscillator` | price | `Option<(ppo, signal, hist)>` |
 | `Aroon` | (high, low) | `Option<(up, down)>` |
@@ -66,7 +84,8 @@ Call `reset()` to clear state without re-allocating.
 | `CommodityChannelIndex` | (high, low, close) | `Option<f>` |
 | `ChaikinMoneyFlow` | (high, low, close, volume) | `Option<f>` |
 | `VolumeWeightedAveragePrice` | (high, low, close, volume) | `f` |
-| `High` / `Low` / `HighLow` | price | `Option<(value, index)>` |
+| `High` / `Low` | price | `Option<f>` |
+| `HighLow` | price | `Option<(high, low)>` |
 
 ## The `Indicator` trait
 
