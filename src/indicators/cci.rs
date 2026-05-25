@@ -1,5 +1,5 @@
+use crate::indicators::{Indicator, MeanAbsDev, SimpleMovingAverage};
 use crate::IndicatorValue;
-use crate::indicators::{Indicator, SimpleMovingAverage, MeanAbsDev};
 
 pub struct CommodityChannelIndex {
     sma: SimpleMovingAverage,
@@ -16,7 +16,6 @@ impl CommodityChannelIndex {
             constant: IndicatorValue::from(0.015),
         }
     }
-
 }
 
 impl Indicator for CommodityChannelIndex {
@@ -27,19 +26,19 @@ impl Indicator for CommodityChannelIndex {
     fn next(&mut self, input: Self::Input) -> Self::Output {
         let (high, low, close) = input;
         let typical_price = (high + low + close) / IndicatorValue::from(3.0);
-        
+
         let ma = self.sma.next(typical_price);
         let mean_deviation = self.mean_abs_dev.next(typical_price);
-        
+
         match (ma, mean_deviation) {
-           (Some(ma), Some(mean_deviation)) => {
+            (Some(ma), Some(mean_deviation)) => {
                 if mean_deviation == IndicatorValue::from(0.0) {
                     Some(IndicatorValue::from(0.0))
                 } else {
                     Some((typical_price - ma) / (self.constant * mean_deviation))
                 }
-            },
-            _ => None
+            }
+            _ => None,
         }
     }
 

@@ -9,10 +9,10 @@ mod tests {
     fn test_macd_next() {
         let mut macd = MovingAverageConvergenceDivergence::new(12, 26, 9);
         let prices = vec![
-            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08,
-            45.89, 46.03, 45.61, 46.28, 46.28, 46.0, 45.75, 46.15, 46.35, 46.55,
-            46.75, 46.95, 47.15, 47.35, 47.55, 47.75, 47.95, 48.15, 48.35, 48.55,
-            48.75, 48.95, 49.15, 49.35, 49.55, 49.75, 49.95, 50.15, 50.35, 50.55
+            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 45.89, 46.03,
+            45.61, 46.28, 46.28, 46.0, 45.75, 46.15, 46.35, 46.55, 46.75, 46.95, 47.15, 47.35,
+            47.55, 47.75, 47.95, 48.15, 48.35, 48.55, 48.75, 48.95, 49.15, 49.35, 49.55, 49.75,
+            49.95, 50.15, 50.35, 50.55,
         ]
         .into_iter()
         .map(IndicatorValue::from)
@@ -23,15 +23,25 @@ mod tests {
             result = macd.next(*price);
         }
         let final_result = result.unwrap();
-        assert_eq!(final_result.macd_value.round_dp(2), IndicatorValue::from(1.12));
-        assert_eq!(final_result.signal_value.round_dp(2), IndicatorValue::from(1.02));
-        assert_eq!(final_result.histogram_value.round_dp(2), IndicatorValue::from(0.10));
+        assert_eq!(
+            final_result.macd_value.round_dp(2),
+            IndicatorValue::from(1.12)
+        );
+        assert_eq!(
+            final_result.signal_value.round_dp(2),
+            IndicatorValue::from(1.02)
+        );
+        assert_eq!(
+            final_result.histogram_value.round_dp(2),
+            IndicatorValue::from(0.10)
+        );
     }
 
     #[test]
     fn test_macd_with_increasing_prices() {
         let mut macd = MovingAverageConvergenceDivergence::new(12, 26, 9);
-        let prices: Vec<IndicatorValue> = (1..=40).map(|x| IndicatorValue::from(x as f64)).collect();
+        let prices: Vec<IndicatorValue> =
+            (1..=40).map(|x| IndicatorValue::from(x as f64)).collect();
 
         let expected_macd = IndicatorValue::from(6.39);
         let expected_signal = IndicatorValue::from(6.14);
@@ -57,7 +67,10 @@ mod tests {
     #[test]
     fn test_macd_with_decreasing_prices() {
         let mut macd = MovingAverageConvergenceDivergence::new(12, 26, 9);
-        let prices: Vec<IndicatorValue> = (1..=40).rev().map(|x| IndicatorValue::from(x as f64)).collect();
+        let prices: Vec<IndicatorValue> = (1..=40)
+            .rev()
+            .map(|x| IndicatorValue::from(x as f64))
+            .collect();
 
         let expected_macd = IndicatorValue::from(-6.39);
         let expected_signal = IndicatorValue::from(-6.14);

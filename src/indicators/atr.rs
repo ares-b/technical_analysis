@@ -1,5 +1,5 @@
 use crate::indicators::Indicator;
-use crate::{IndicatorValue, CircularBuffer};
+use crate::{CircularBuffer, IndicatorValue};
 
 pub struct AverageTrueRange {
     true_ranges: CircularBuffer,

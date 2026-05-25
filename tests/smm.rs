@@ -9,7 +9,10 @@ mod tests {
 
         assert_eq!(smm.next(IndicatorValue::from(10.0)), None);
         assert_eq!(smm.next(IndicatorValue::from(20.0)), None);
-        assert_eq!(smm.next(IndicatorValue::from(30.0)).unwrap(), IndicatorValue::from(20.0));
+        assert_eq!(
+            smm.next(IndicatorValue::from(30.0)).unwrap(),
+            IndicatorValue::from(20.0)
+        );
     }
 
     #[test]
@@ -29,10 +32,22 @@ mod tests {
         let mut smm = SimpleMovingMedian::new(3);
         assert_eq!(smm.next(IndicatorValue::from(10.0)), None);
         assert_eq!(smm.next(IndicatorValue::from(10.0)), None);
-        assert_eq!(smm.next(IndicatorValue::from(20.0)).unwrap(), IndicatorValue::from(10.0));
-        assert_eq!(smm.next(IndicatorValue::from(30.0)).unwrap(), IndicatorValue::from(20.0));
-        assert_eq!(smm.next(IndicatorValue::from(40.0)).unwrap(), IndicatorValue::from(30.0));
-        assert_eq!(smm.next(IndicatorValue::from(50.0)).unwrap(), IndicatorValue::from(40.0));
+        assert_eq!(
+            smm.next(IndicatorValue::from(20.0)).unwrap(),
+            IndicatorValue::from(10.0)
+        );
+        assert_eq!(
+            smm.next(IndicatorValue::from(30.0)).unwrap(),
+            IndicatorValue::from(20.0)
+        );
+        assert_eq!(
+            smm.next(IndicatorValue::from(40.0)).unwrap(),
+            IndicatorValue::from(30.0)
+        );
+        assert_eq!(
+            smm.next(IndicatorValue::from(50.0)).unwrap(),
+            IndicatorValue::from(40.0)
+        );
     }
 
     #[test]
@@ -46,7 +61,10 @@ mod tests {
 
         assert_eq!(smm.next(IndicatorValue::from(0.0)), None);
         assert_eq!(smm.next(IndicatorValue::from(12.5)), None);
-        assert_eq!(smm.next(IndicatorValue::from(40.0)).unwrap(), IndicatorValue::from(12.5));
+        assert_eq!(
+            smm.next(IndicatorValue::from(40.0)).unwrap(),
+            IndicatorValue::from(12.5)
+        );
     }
 
     #[test]
@@ -54,14 +72,19 @@ mod tests {
         let mut smm = SimpleMovingMedian::new(3);
 
         // Pass a chunk of values
-        assert_eq!(smm.next_chunk(&[
-            IndicatorValue::from(10.0),
-            IndicatorValue::from(20.0),
-            IndicatorValue::from(30.0),
-        ]).unwrap(), IndicatorValue::from(20.0));
-        assert_eq!(smm.next_chunk(&[
-            IndicatorValue::from(40.0),
-            IndicatorValue::from(50.0),
-        ]).unwrap(), IndicatorValue::from(40.0)); // Median of [30, 40, 50] should be 40
+        assert_eq!(
+            smm.next_chunk(&[
+                IndicatorValue::from(10.0),
+                IndicatorValue::from(20.0),
+                IndicatorValue::from(30.0),
+            ])
+            .unwrap(),
+            IndicatorValue::from(20.0)
+        );
+        assert_eq!(
+            smm.next_chunk(&[IndicatorValue::from(40.0), IndicatorValue::from(50.0),])
+                .unwrap(),
+            IndicatorValue::from(40.0)
+        ); // Median of [30, 40, 50] should be 40
     }
 }

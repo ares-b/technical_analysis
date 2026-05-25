@@ -1,17 +1,16 @@
+use rust_decimal::prelude::{FromPrimitive, ToPrimitive};
 use rust_decimal::Decimal;
 use rust_decimal::MathematicalOps;
-use rust_decimal::prelude::{FromPrimitive, ToPrimitive};
-use std::ops::{Add, Sub, Mul, Div, AddAssign, SubAssign, MulAssign, DivAssign, Neg};
-use std::str::FromStr;
 use std::cmp::Ordering;
 use std::iter::Sum;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use std::str::FromStr;
 
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug)]
 pub struct IndicatorValue(Decimal);
 
 impl IndicatorValue {
-
     #[inline]
     pub fn max() -> Self {
         Self(Decimal::MAX)
@@ -23,18 +22,19 @@ impl IndicatorValue {
     }
 
     #[inline]
-    pub fn value(&self) -> Decimal {
+    pub fn to_f64(&self) -> f64 {
         self.0
+            .to_f64()
+            .unwrap_or_else(|| panic!("Failed to convert Decimal to f64"))
     }
 
     #[inline]
-    pub fn to_f64(&self) -> f64 {
-        self.0.to_f64().unwrap_or_else(|| panic!("Failed to convert Decimal to f64"))
-    }
-    
-    #[inline]
     pub fn sqrt(&self) -> Self {
-        Self(self.0.sqrt().unwrap_or_else(|| panic!("Failed to compute sqrt")))
+        Self(
+            self.0
+                .sqrt()
+                .unwrap_or_else(|| panic!("Failed to compute sqrt")),
+        )
     }
 
     #[inline]
@@ -51,7 +51,6 @@ impl IndicatorValue {
     pub fn recip(&self) -> Self {
         Self(Decimal::ONE / self.0)
     }
-    
 }
 
 impl From<f64> for IndicatorValue {
@@ -64,14 +63,20 @@ impl From<f64> for IndicatorValue {
 impl From<&str> for IndicatorValue {
     #[inline]
     fn from(value: &str) -> Self {
-        Self(Decimal::from_str(value).unwrap_or_else(|e| panic!("IndicatorValue::from(\"{value}\"): {e}")))
+        Self(
+            Decimal::from_str(value)
+                .unwrap_or_else(|e| panic!("IndicatorValue::from(\"{value}\"): {e}")),
+        )
     }
 }
 
 impl From<usize> for IndicatorValue {
     #[inline]
     fn from(value: usize) -> Self {
-        Self(Decimal::from_usize(value).unwrap_or_else(|| panic!("Failed to convert usize to Decimal")))
+        Self(
+            Decimal::from_usize(value)
+                .unwrap_or_else(|| panic!("Failed to convert usize to Decimal")),
+        )
     }
 }
 
@@ -95,26 +100,6 @@ impl PartialOrd for IndicatorValue {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.0.partial_cmp(&other.0)
-    }
-
-    #[inline]
-    fn lt(&self, other: &Self) -> bool {
-        self.0 < other.0
-    }
-
-    #[inline]
-    fn le(&self, other: &Self) -> bool {
-        self.0 <= other.0
-    }
-
-    #[inline]
-    fn gt(&self, other: &Self) -> bool {
-        self.0 > other.0
-    }
-
-    #[inline]
-    fn ge(&self, other: &Self) -> bool {
-        self.0 >= other.0
     }
 }
 

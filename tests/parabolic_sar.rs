@@ -3,7 +3,7 @@ mod tests {
     use technical_analysis::indicators::{Indicator, ParabolicSAR};
     use technical_analysis::IndicatorValue;
 
-     #[test]
+    #[test]
     fn test_initialization_period() {
         let mut psar = ParabolicSAR::new(0.02, 0.2, 5);
         let data = [
@@ -18,7 +18,10 @@ mod tests {
             assert_eq!(psar.next(value), None);
         }
 
-        assert_eq!(psar.next(data[4]).unwrap().round_dp(2), IndicatorValue::from(5.18));
+        assert_eq!(
+            psar.next(data[4]).unwrap().round_dp(2),
+            IndicatorValue::from(5.18)
+        );
     }
 
     #[test]
@@ -38,9 +41,15 @@ mod tests {
             psar.next(data[i]);
         }
 
-        assert_eq!(psar.next(data[5]).unwrap().round_dp(2), IndicatorValue::from(5.18));
+        assert_eq!(
+            psar.next(data[5]).unwrap().round_dp(2),
+            IndicatorValue::from(5.18)
+        );
 
-        assert_eq!(psar.next(data[6]).unwrap().round_dp(2), IndicatorValue::from(5.57));
+        assert_eq!(
+            psar.next(data[6]).unwrap().round_dp(2),
+            IndicatorValue::from(5.57)
+        );
     }
 
     #[test]
@@ -60,9 +69,15 @@ mod tests {
             psar.next(data[i]);
         }
 
-        assert_eq!(psar.next(data[5]).unwrap().round_dp(2), IndicatorValue::from(5.18));
+        assert_eq!(
+            psar.next(data[5]).unwrap().round_dp(2),
+            IndicatorValue::from(5.18)
+        );
 
-        assert_eq!(psar.next(data[6]).unwrap().round_dp(2), IndicatorValue::from(5.36));
+        assert_eq!(
+            psar.next(data[6]).unwrap().round_dp(2),
+            IndicatorValue::from(5.36)
+        );
     }
 
     #[test]
@@ -82,8 +97,14 @@ mod tests {
             psar.next(data[i]);
         }
 
-        assert_eq!(psar.next(data[5]).unwrap().round_dp(2), IndicatorValue::from(5.18));
-        assert_eq!(psar.next(data[6]).unwrap().round_dp(2), IndicatorValue::from(5.57));
+        assert_eq!(
+            psar.next(data[5]).unwrap().round_dp(2),
+            IndicatorValue::from(5.18)
+        );
+        assert_eq!(
+            psar.next(data[6]).unwrap().round_dp(2),
+            IndicatorValue::from(5.57)
+        );
     }
 
     #[test]
@@ -103,8 +124,14 @@ mod tests {
             psar.next(data[i]);
         }
 
-        assert_eq!(psar.next(data[5]).unwrap().round_dp(2), IndicatorValue::from(5.18));
-        assert_eq!(psar.next(data[6]).unwrap().round_dp(2), IndicatorValue::from(5.36));
+        assert_eq!(
+            psar.next(data[5]).unwrap().round_dp(2),
+            IndicatorValue::from(5.18)
+        );
+        assert_eq!(
+            psar.next(data[6]).unwrap().round_dp(2),
+            IndicatorValue::from(5.36)
+        );
     }
 
     #[test]
@@ -124,6 +151,9 @@ mod tests {
 
         psar.reset();
 
-        assert_eq!(psar.next((IndicatorValue::from(14.0), IndicatorValue::from(9.0))), None);
+        assert_eq!(
+            psar.next((IndicatorValue::from(14.0), IndicatorValue::from(9.0))),
+            None
+        );
     }
 }

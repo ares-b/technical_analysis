@@ -1,5 +1,5 @@
-use crate::{CircularBuffer, IndicatorValue};
 use crate::indicators::Indicator;
+use crate::{CircularBuffer, IndicatorValue};
 
 pub struct StandardDeviation {
     buffer: CircularBuffer,
@@ -18,7 +18,8 @@ impl StandardDeviation {
             sum: 0.0.into(),
             sum_of_squares: 0.0.into(),
             period_reciprocal: IndicatorValue::from(1.0) / IndicatorValue::from(period),
-            bessel_correction_reciprocal: IndicatorValue::from(1.0) / (IndicatorValue::from(period) - IndicatorValue::from(1.0)),
+            bessel_correction_reciprocal: IndicatorValue::from(1.0)
+                / (IndicatorValue::from(period) - IndicatorValue::from(1.0)),
             mean: 0.0.into(),
         }
     }

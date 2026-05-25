@@ -39,7 +39,6 @@ impl Indicator for SimpleMovingAverage {
         } else {
             None
         }
-
     }
 
     #[inline]

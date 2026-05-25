@@ -1,5 +1,5 @@
-use std::iter::FusedIterator;
 use crate::IndicatorValue;
+use std::iter::FusedIterator;
 
 #[derive(Debug, Clone)]
 pub struct CircularBuffer {
@@ -24,7 +24,11 @@ impl CircularBuffer {
 
     #[inline]
     fn get_circular_index(&self, index: usize) -> usize {
-        debug_assert!(index < self.len(), "index {index} out of bounds (len {})", self.len());
+        debug_assert!(
+            index < self.len(),
+            "index {index} out of bounds (len {})",
+            self.len()
+        );
 
         let circular_index: usize = self.index + self.capacity_1 - index;
 
@@ -52,12 +56,20 @@ impl CircularBuffer {
             self.full = true;
         }
 
-        if was_full { Some(old_value) } else { None }
+        if was_full {
+            Some(old_value)
+        } else {
+            None
+        }
     }
 
     #[inline]
     pub fn len(&self) -> usize {
-        if self.full { self.capacity } else { self.index }
+        if self.full {
+            self.capacity
+        } else {
+            self.index
+        }
     }
 
     #[inline]

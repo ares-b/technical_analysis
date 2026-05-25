@@ -11,24 +11,29 @@ pub struct BollingerBands {
 #[derive(Debug, PartialEq)]
 pub struct BollingerBandsOutput {
     pub upper_band: IndicatorValue,
+    pub middle_band: IndicatorValue,
     pub lower_band: IndicatorValue,
 }
 
 impl Default for BollingerBandsOutput {
     fn default() -> Self {
-        Self { upper_band: 0.0.into(), lower_band: 0.0.into() }
+        Self {
+            upper_band: 0.0.into(),
+            middle_band: 0.0.into(),
+            lower_band: 0.0.into(),
+        }
     }
 }
 
 impl Default for BollingerBands {
     fn default() -> Self {
-        Self::new(20, 2)
+        Self::new(20, 2.0)
     }
 }
 
 impl BollingerBands {
     #[inline]
-    pub fn new(period: usize, multiplier: usize) -> Self {
+    pub fn new(period: usize, multiplier: f64) -> Self {
         BollingerBands {
             multiplier: multiplier.into(),
             sma: SimpleMovingAverage::new(period),
@@ -51,13 +56,12 @@ impl Indicator for BollingerBands {
                 let offset = self.multiplier * stdev;
                 Some(BollingerBandsOutput {
                     upper_band: sma + offset,
+                    middle_band: sma,
                     lower_band: sma - offset,
                 })
-            },
-            _ => None
+            }
+            _ => None,
         }
-        
-        
     }
 
     #[inline]

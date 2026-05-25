@@ -26,7 +26,8 @@ impl RelativeStrengthIndex {
     #[inline]
     fn calculate_rsi(&self) -> IndicatorValue {
         let rs = self.avg_gain / self.avg_loss;
-        IndicatorValue::from(100.0) - (IndicatorValue::from(100.0) / (IndicatorValue::from(1.0) + rs))
+        IndicatorValue::from(100.0)
+            - (IndicatorValue::from(100.0) / (IndicatorValue::from(1.0) + rs))
     }
 }
 
@@ -45,8 +46,16 @@ impl Indicator for RelativeStrengthIndex {
         if let Some(previous_value) = self.prev_value {
             let change = input - previous_value;
 
-            let gain = if change > IndicatorValue::from(0.0) { change } else { IndicatorValue::from(0.0) };
-            let loss = if change < IndicatorValue::from(0.0) { -change } else { IndicatorValue::from(0.0) };
+            let gain = if change > IndicatorValue::from(0.0) {
+                change
+            } else {
+                IndicatorValue::from(0.0)
+            };
+            let loss = if change < IndicatorValue::from(0.0) {
+                -change
+            } else {
+                IndicatorValue::from(0.0)
+            };
 
             self.count += 1;
 
@@ -61,13 +70,17 @@ impl Indicator for RelativeStrengthIndex {
                 self.avg_gain *= self.period_reciprocal;
                 self.avg_loss *= self.period_reciprocal;
             } else {
-                self.avg_gain = (self.avg_gain * IndicatorValue::from(self.period - 1) + gain) * self.period_reciprocal;
-                self.avg_loss = (self.avg_loss * IndicatorValue::from(self.period - 1) + loss) * self.period_reciprocal;
+                self.avg_gain = (self.avg_gain * IndicatorValue::from(self.period - 1) + gain)
+                    * self.period_reciprocal;
+                self.avg_loss = (self.avg_loss * IndicatorValue::from(self.period - 1) + loss)
+                    * self.period_reciprocal;
             }
 
             self.prev_value = Some(input);
 
-            if self.avg_gain == IndicatorValue::from(0.0) && self.avg_loss == IndicatorValue::from(0.0) {
+            if self.avg_gain == IndicatorValue::from(0.0)
+                && self.avg_loss == IndicatorValue::from(0.0)
+            {
                 Some(IndicatorValue::from(50.0))
             } else if self.avg_loss == IndicatorValue::from(0.0) {
                 Some(IndicatorValue::from(100.0))

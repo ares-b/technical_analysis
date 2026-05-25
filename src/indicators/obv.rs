@@ -33,7 +33,7 @@ impl Indicator for OnBalanceVolume {
         match self.prev_close {
             Some(prev_close) if close > prev_close => self.obv += volume,
             Some(prev_close) if close < prev_close => self.obv -= volume,
-            _ => {},
+            _ => {}
         }
 
         self.prev_close = Some(close);

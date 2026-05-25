@@ -1,4 +1,4 @@
-use crate::indicators::{Indicator, ExponentialMovingAverage};
+use crate::indicators::{ExponentialMovingAverage, Indicator};
 use crate::IndicatorValue;
 
 #[derive(PartialEq, Debug)]

@@ -1,18 +1,16 @@
 #![feature(test)]
 
 extern crate test;
-use test::Bencher;
 use technical_analysis::indicators::{
-    Indicator, HighLow, High, Low,
-    Aroon, SimpleMovingAverage, StandardDeviation,
-    AverageTrueRange, ExponentialMovingAverage, RelativeStrengthIndex,
-    ChaikinMoneyFlow, BollingerBands, OnBalanceVolume, ParabolicSAR,
-    RateOfChange, KeltnerChannels, VolumeWeightedAveragePrice,
-    ChandeMomentumOscillator, PercentagePriceOscillator, CommodityChannelIndex,
-    DonchianChannels, MovingAverageConvergenceDivergence, MeanAbsDev,
-    MedianAbsoluteStandardDeviation, StochasticOscillator
+    Aroon, AverageTrueRange, BollingerBands, ChaikinMoneyFlow, ChandeMomentumOscillator,
+    CommodityChannelIndex, DonchianChannels, ExponentialMovingAverage, High, HighLow, Indicator,
+    KeltnerChannels, Low, MeanAbsDev, MedianAbsoluteStandardDeviation,
+    MovingAverageConvergenceDivergence, OnBalanceVolume, ParabolicSAR, PercentagePriceOscillator,
+    RateOfChange, RelativeStrengthIndex, SimpleMovingAverage, StandardDeviation,
+    StochasticOscillator, VolumeWeightedAveragePrice,
 };
 use technical_analysis::{CircularBuffer, IndicatorValue};
+use test::Bencher;
 
 // Helper to generate random data for benchmarks
 fn generate_random_data(seed: u64, len: usize) -> Vec<IndicatorValue> {
@@ -48,23 +46,28 @@ where
 // Generate tuple data for indicators that require multiple input values
 fn generate_tuple_data2(seed: u64, len: usize) -> Vec<(IndicatorValue, IndicatorValue)> {
     let data = generate_random_data(seed, len);
-    data.windows(2)
-        .map(|w| (w[0], w[1]))
-        .collect()
+    data.windows(2).map(|w| (w[0], w[1])).collect()
 }
 
-fn generate_tuple_data3(seed: u64, len: usize) -> Vec<(IndicatorValue, IndicatorValue, IndicatorValue)> {
+fn generate_tuple_data3(
+    seed: u64,
+    len: usize,
+) -> Vec<(IndicatorValue, IndicatorValue, IndicatorValue)> {
     let data = generate_random_data(seed, len);
-    data.windows(3)
-        .map(|w| (w[0], w[1], w[2]))
-        .collect()
+    data.windows(3).map(|w| (w[0], w[1], w[2])).collect()
 }
 
-fn generate_tuple_data4(seed: u64, len: usize) -> Vec<(IndicatorValue, IndicatorValue, IndicatorValue, IndicatorValue)> {
+fn generate_tuple_data4(
+    seed: u64,
+    len: usize,
+) -> Vec<(
+    IndicatorValue,
+    IndicatorValue,
+    IndicatorValue,
+    IndicatorValue,
+)> {
     let data = generate_random_data(seed, len);
-    data.windows(4)
-        .map(|w| (w[0], w[1], w[2], w[3]))
-        .collect()
+    data.windows(4).map(|w| (w[0], w[1], w[2], w[3])).collect()
 }
 
 #[bench]
@@ -121,7 +124,6 @@ fn bench_circular_buffer_iter_reversed(b: &mut Bencher) {
     });
 }
 
-
 macro_rules! create_bench {
     ($name:ident, $indicator:expr, $data:expr) => {
         #[bench]
@@ -133,28 +135,120 @@ macro_rules! create_bench {
     };
 }
 
-create_bench!(high_low, HighLow::new(14), generate_random_data(12345, 1000));
+create_bench!(
+    high_low,
+    HighLow::new(14),
+    generate_random_data(12345, 1000)
+);
 create_bench!(high, High::new(14), generate_random_data(12345, 1000));
 create_bench!(low, Low::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_aroon, Aroon::new(14), generate_tuple_data2(12345, 1000));
-create_bench!(bench_smm, SimpleMovingAverage::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_sma, SimpleMovingAverage::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_stdev, StandardDeviation::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_atr, AverageTrueRange::new(14), generate_tuple_data3(12345, 1000));
-create_bench!(bench_rsi, RelativeStrengthIndex::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_cmf, ChaikinMoneyFlow::new(20), generate_tuple_data4(12345, 1000));
-create_bench!(bench_bollinger_bands, BollingerBands::new(20, 2), generate_random_data(12345, 1000));
-create_bench!(bench_obv, OnBalanceVolume::new(), generate_tuple_data2(12345, 1000));
-create_bench!(bench_parabolic_sar, ParabolicSAR::default(), generate_tuple_data2(12345, 1000));
-create_bench!(bench_roc, RateOfChange::new(12), generate_random_data(12345, 1000));
-create_bench!(bench_cmo, ChandeMomentumOscillator::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_donchian_channels, DonchianChannels::new(20), generate_tuple_data2(12345, 1000));
-create_bench!(bench_ema, ExponentialMovingAverage::new(12), generate_random_data(12345, 1000));
-create_bench!(bench_keltner_channels, KeltnerChannels::new(20, 10, 2), generate_tuple_data3(12345, 1000));
-create_bench!(bench_macd, MovingAverageConvergenceDivergence::new(12, 26, 9), generate_random_data(12345, 1000));
-create_bench!(bench_mean_abs_dev, MeanAbsDev::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_median_abs_dev, MedianAbsoluteStandardDeviation::new(14), generate_random_data(12345, 1000));
-create_bench!(bench_ppo, PercentagePriceOscillator::new(12, 26, 9), generate_random_data(12345, 1000));
-create_bench!(bench_vwap, VolumeWeightedAveragePrice::default(), generate_tuple_data4(12345, 1000));
-create_bench!(bench_stochastic_oscillator, StochasticOscillator::default(), generate_tuple_data3(12345, 1000));
-create_bench!(bench_woodies_cci, CommodityChannelIndex::new(14), generate_tuple_data3(12345, 1000));
+create_bench!(
+    bench_aroon,
+    Aroon::new(14),
+    generate_tuple_data2(12345, 1000)
+);
+create_bench!(
+    bench_smm,
+    SimpleMovingAverage::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_sma,
+    SimpleMovingAverage::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_stdev,
+    StandardDeviation::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_atr,
+    AverageTrueRange::new(14),
+    generate_tuple_data3(12345, 1000)
+);
+create_bench!(
+    bench_rsi,
+    RelativeStrengthIndex::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_cmf,
+    ChaikinMoneyFlow::new(20),
+    generate_tuple_data4(12345, 1000)
+);
+create_bench!(
+    bench_bollinger_bands,
+    BollingerBands::new(20, 2),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_obv,
+    OnBalanceVolume::new(),
+    generate_tuple_data2(12345, 1000)
+);
+create_bench!(
+    bench_parabolic_sar,
+    ParabolicSAR::default(),
+    generate_tuple_data2(12345, 1000)
+);
+create_bench!(
+    bench_roc,
+    RateOfChange::new(12),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_cmo,
+    ChandeMomentumOscillator::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_donchian_channels,
+    DonchianChannels::new(20),
+    generate_tuple_data2(12345, 1000)
+);
+create_bench!(
+    bench_ema,
+    ExponentialMovingAverage::new(12),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_keltner_channels,
+    KeltnerChannels::new(20, 10, 2),
+    generate_tuple_data3(12345, 1000)
+);
+create_bench!(
+    bench_macd,
+    MovingAverageConvergenceDivergence::new(12, 26, 9),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_mean_abs_dev,
+    MeanAbsDev::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_median_abs_dev,
+    MedianAbsoluteStandardDeviation::new(14),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_ppo,
+    PercentagePriceOscillator::new(12, 26, 9),
+    generate_random_data(12345, 1000)
+);
+create_bench!(
+    bench_vwap,
+    VolumeWeightedAveragePrice::default(),
+    generate_tuple_data4(12345, 1000)
+);
+create_bench!(
+    bench_stochastic_oscillator,
+    StochasticOscillator::default(),
+    generate_tuple_data3(12345, 1000)
+);
+create_bench!(
+    bench_woodies_cci,
+    CommodityChannelIndex::new(14),
+    generate_tuple_data3(12345, 1000)
+);

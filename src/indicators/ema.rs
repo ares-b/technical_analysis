@@ -16,7 +16,7 @@ impl ExponentialMovingAverage {
             multiplier,
             current_ema: None,
             period,
-            count: 0
+            count: 0,
         }
     }
 
@@ -41,7 +41,8 @@ impl Indicator for ExponentialMovingAverage {
     fn next(&mut self, input: Self::Input) -> Self::Output {
         let ema = match self.current_ema {
             Some(previous_ema) => {
-                (self.multiplier * input) + ((IndicatorValue::from(1.0) - self.multiplier) * previous_ema)
+                (self.multiplier * input)
+                    + ((IndicatorValue::from(1.0) - self.multiplier) * previous_ema)
             }
             None => input,
         };

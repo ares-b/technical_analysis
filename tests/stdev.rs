@@ -8,8 +8,14 @@ mod tests {
         let mut stdev = StandardDeviation::new(3);
         assert_eq!(stdev.next(IndicatorValue::from(1.0)), None);
         assert_eq!(stdev.next(IndicatorValue::from(2.0)), None);
-        assert_eq!(stdev.next(IndicatorValue::from(3.0)).unwrap().round_dp(2), IndicatorValue::from(1.0));
-        assert_eq!(stdev.next(IndicatorValue::from(4.0)).unwrap().round_dp(2), IndicatorValue::from(1.0));
+        assert_eq!(
+            stdev.next(IndicatorValue::from(3.0)).unwrap().round_dp(2),
+            IndicatorValue::from(1.0)
+        );
+        assert_eq!(
+            stdev.next(IndicatorValue::from(4.0)).unwrap().round_dp(2),
+            IndicatorValue::from(1.0)
+        );
     }
 
     #[test]

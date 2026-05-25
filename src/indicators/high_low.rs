@@ -1,5 +1,5 @@
-use crate::{CircularBuffer, IndicatorValue};
 use crate::indicators::Indicator;
+use crate::{CircularBuffer, IndicatorValue};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct HighOutput {
@@ -24,7 +24,12 @@ impl High {
     }
 
     #[inline]
-    fn update_high(&mut self, input: IndicatorValue, old_value: Option<IndicatorValue>, input_index: usize) {
+    fn update_high(
+        &mut self,
+        input: IndicatorValue,
+        old_value: Option<IndicatorValue>,
+        input_index: usize,
+    ) {
         if old_value.is_some() && self.current_high_value == old_value {
             self.current_high_value = None;
             self.current_high_index = None;
@@ -39,7 +44,6 @@ impl High {
             self.current_high_index = Some(input_index);
         }
     }
-    
 }
 
 impl Indicator for High {
@@ -54,10 +58,10 @@ impl Indicator for High {
         self.update_high(input, old_value, next_index);
 
         if self.buffer.is_full() {
-            return Some(HighOutput{
+            return Some(HighOutput {
                 high_value: self.current_high_value.unwrap(),
                 high_index: self.current_high_index.unwrap(),
-            })
+            });
         }
         None
     }
@@ -93,7 +97,12 @@ impl Low {
     }
 
     #[inline]
-    fn update_low(&mut self, input: IndicatorValue, old_value: Option<IndicatorValue>, input_index: usize) {
+    fn update_low(
+        &mut self,
+        input: IndicatorValue,
+        old_value: Option<IndicatorValue>,
+        input_index: usize,
+    ) {
         if old_value.is_some() && self.current_low_value == old_value {
             self.current_low_value = None;
             self.current_low_index = None;
@@ -108,8 +117,6 @@ impl Low {
             self.current_low_index = Some(input_index);
         }
     }
-
-
 }
 
 impl Indicator for Low {
@@ -123,10 +130,10 @@ impl Indicator for Low {
         self.update_low(input, old_value, next_index);
 
         if self.buffer.is_full() {
-            return Some(LowOutput{
+            return Some(LowOutput {
                 low_value: self.current_low_value.unwrap(),
-                low_index: self.current_low_index.unwrap()
-            })
+                low_index: self.current_low_index.unwrap(),
+            });
         }
         None
     }
@@ -168,7 +175,12 @@ impl HighLow {
     }
 
     #[inline]
-    fn update_high(&mut self, input: IndicatorValue, old_value: Option<IndicatorValue>, input_index: usize) {
+    fn update_high(
+        &mut self,
+        input: IndicatorValue,
+        old_value: Option<IndicatorValue>,
+        input_index: usize,
+    ) {
         if old_value.is_some() && self.current_high_value == old_value {
             self.current_high_value = None;
             self.current_high_index = None;
@@ -185,7 +197,12 @@ impl HighLow {
     }
 
     #[inline]
-    fn update_low(&mut self, input: IndicatorValue, old_value: Option<IndicatorValue>, input_index: usize) {
+    fn update_low(
+        &mut self,
+        input: IndicatorValue,
+        old_value: Option<IndicatorValue>,
+        input_index: usize,
+    ) {
         if old_value.is_some() && self.current_low_value == old_value {
             self.current_low_value = None;
             self.current_low_index = None;
@@ -205,7 +222,6 @@ impl HighLow {
     pub fn buffer_is_full(&self) -> bool {
         self.buffer.is_full()
     }
-
 }
 
 impl Indicator for HighLow {
@@ -220,12 +236,12 @@ impl Indicator for HighLow {
         self.update_low(input, old_value, next_index);
 
         if self.buffer.is_full() {
-            return Some(HighLowOutput{
+            return Some(HighLowOutput {
                 high_value: self.current_high_value.unwrap(),
                 high_index: self.current_high_index.unwrap(),
                 low_value: self.current_low_value.unwrap(),
-                low_index: self.current_low_index.unwrap()
-            })
+                low_index: self.current_low_index.unwrap(),
+            });
         }
         None
     }

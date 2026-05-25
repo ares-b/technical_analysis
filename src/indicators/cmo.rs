@@ -63,7 +63,6 @@ impl Indicator for ChandeMomentumOscillator {
 
         if !self.buffer.is_full() {
             return None;
-            
         }
 
         let total_sum = self.sum_up + self.sum_down;

@@ -1,15 +1,13 @@
-use std::ops::{Add, Sub, Mul, Div, AddAssign, SubAssign, MulAssign, DivAssign, Neg};
-use std::iter::Sum;
 use std::cmp::Ordering;
 use std::hash::{Hash, Hasher};
-use serde::Deserialize;
+use std::iter::Sum;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 #[repr(transparent)]
-#[derive(Copy, Clone, Debug, Deserialize)]
+#[derive(Copy, Clone, Debug)]
 pub struct IndicatorValue(f64);
 
 impl IndicatorValue {
-
     #[inline]
     pub fn max() -> Self {
         Self(f64::MAX)
@@ -18,11 +16,6 @@ impl IndicatorValue {
     #[inline]
     pub fn min() -> Self {
         Self(f64::MIN)
-    }
-
-    #[inline]
-    pub fn value(&self) -> f64 {
-        self.0
     }
 
     #[inline]
@@ -63,7 +56,6 @@ impl IndicatorValue {
     pub fn recip(&self) -> Self {
         Self(self.0.recip())
     }
-    
 }
 
 impl From<f64> for IndicatorValue {
@@ -76,7 +68,11 @@ impl From<f64> for IndicatorValue {
 impl From<&str> for IndicatorValue {
     #[inline]
     fn from(value: &str) -> Self {
-        Self(value.parse::<f64>().unwrap_or_else(|e| panic!("IndicatorValue::from(\"{value}\"): {e}")))
+        Self(
+            value
+                .parse::<f64>()
+                .unwrap_or_else(|e| panic!("IndicatorValue::from(\"{value}\"): {e}")),
+        )
     }
 }
 
@@ -104,12 +100,11 @@ impl PartialEq for IndicatorValue {
 impl Eq for IndicatorValue {}
 
 impl PartialOrd for IndicatorValue {
-
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.0.partial_cmp(&other.0)
     }
-    
+
     #[inline]
     fn lt(&self, other: &Self) -> bool {
         self.0 < other.0
@@ -219,7 +214,11 @@ impl DivAssign for IndicatorValue {
 
 impl Hash for IndicatorValue {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        let bits = if self.0 == 0.0 { 0u64 } else { self.0.to_bits() };
+        let bits = if self.0 == 0.0 {
+            0u64
+        } else {
+            self.0.to_bits()
+        };
         bits.hash(state);
     }
 }

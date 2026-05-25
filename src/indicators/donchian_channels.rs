@@ -46,13 +46,23 @@ impl Indicator for DonchianChannels {
         let old_low = self.low_buffer.push(low);
 
         if old_high.is_some() && self.current_max == old_high.unwrap() {
-            self.current_max = self.high_buffer.iter().max().copied().unwrap_or(IndicatorValue::min());
+            self.current_max = self
+                .high_buffer
+                .iter()
+                .max()
+                .copied()
+                .unwrap_or(IndicatorValue::min());
         } else {
             self.current_max = self.current_max.max(high);
         }
 
         if old_low.is_some() && self.current_min == old_low.unwrap() {
-            self.current_min = self.low_buffer.iter().min().copied().unwrap_or(IndicatorValue::max());
+            self.current_min = self
+                .low_buffer
+                .iter()
+                .min()
+                .copied()
+                .unwrap_or(IndicatorValue::max());
         } else {
             self.current_min = self.current_min.min(low);
         }

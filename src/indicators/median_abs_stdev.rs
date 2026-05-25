@@ -1,5 +1,5 @@
-use crate::CircularBuffer;
 use crate::indicators::Indicator;
+use crate::CircularBuffer;
 use crate::IndicatorValue;
 
 /// Median Absolute Deviation: median(|x_i − median(window)|) over a rolling window.
@@ -26,7 +26,12 @@ impl MedianAbsoluteStandardDeviation {
     }
 
     #[inline]
-    fn median_of(sorted: &[IndicatorValue], is_even: bool, mid: usize, mid_1: usize) -> IndicatorValue {
+    fn median_of(
+        sorted: &[IndicatorValue],
+        is_even: bool,
+        mid: usize,
+        mid_1: usize,
+    ) -> IndicatorValue {
         if is_even {
             (sorted[mid_1] + sorted[mid]) / IndicatorValue::from(2.0)
         } else {
@@ -55,12 +60,23 @@ impl Indicator for MedianAbsoluteStandardDeviation {
             return None;
         }
 
-        let median = Self::median_of(&self.sorted, self.is_even, self.median_index, self.median_index_1);
+        let median = Self::median_of(
+            &self.sorted,
+            self.is_even,
+            self.median_index,
+            self.median_index_1,
+        );
 
-        let mut abs_devs: Vec<IndicatorValue> = self.sorted.iter().map(|&x| (x - median).abs()).collect();
+        let mut abs_devs: Vec<IndicatorValue> =
+            self.sorted.iter().map(|&x| (x - median).abs()).collect();
         abs_devs.sort_unstable();
 
-        Some(Self::median_of(&abs_devs, self.is_even, self.median_index, self.median_index_1))
+        Some(Self::median_of(
+            &abs_devs,
+            self.is_even,
+            self.median_index,
+            self.median_index_1,
+        ))
     }
 
     fn reset(&mut self) {

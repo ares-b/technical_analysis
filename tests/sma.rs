@@ -8,8 +8,14 @@ mod tests {
         let mut sma = SimpleMovingAverage::new(3);
         assert_eq!(sma.next(IndicatorValue::from(1.0)), None);
         assert_eq!(sma.next(IndicatorValue::from(2.0)), None);
-        assert_eq!(sma.next(IndicatorValue::from(3.0)).unwrap().round_dp(2), IndicatorValue::from(2.0));
-        assert_eq!(sma.next(IndicatorValue::from(4.0)).unwrap().round_dp(2), IndicatorValue::from(3.0));
+        assert_eq!(
+            sma.next(IndicatorValue::from(3.0)).unwrap().round_dp(2),
+            IndicatorValue::from(2.0)
+        );
+        assert_eq!(
+            sma.next(IndicatorValue::from(4.0)).unwrap().round_dp(2),
+            IndicatorValue::from(3.0)
+        );
     }
 
     #[test]
@@ -36,7 +42,8 @@ mod tests {
     #[test]
     fn test_sma_with_large_data() {
         let mut sma = SimpleMovingAverage::new(100);
-        let data: Vec<IndicatorValue> = (1..=1000).map(|x| IndicatorValue::from(x as f64)).collect();
+        let data: Vec<IndicatorValue> =
+            (1..=1000).map(|x| IndicatorValue::from(x as f64)).collect();
         let result = sma.next_chunk(&data);
         assert_eq!(result.unwrap().round_dp(2), IndicatorValue::from(950.5));
     }
@@ -45,7 +52,14 @@ mod tests {
     fn test_sma_all_same_values() {
         let mut sma = SimpleMovingAverage::new(3);
         assert_eq!(
-            sma.next_chunk(&[IndicatorValue::from(2.0), IndicatorValue::from(2.0), IndicatorValue::from(2.0), IndicatorValue::from(2.0)]).unwrap().round_dp(2),
+            sma.next_chunk(&[
+                IndicatorValue::from(2.0),
+                IndicatorValue::from(2.0),
+                IndicatorValue::from(2.0),
+                IndicatorValue::from(2.0)
+            ])
+            .unwrap()
+            .round_dp(2),
             IndicatorValue::from(2.0)
         );
     }
@@ -54,7 +68,14 @@ mod tests {
     fn test_sma_with_zeros() {
         let mut sma = SimpleMovingAverage::new(3);
         assert_eq!(
-            sma.next_chunk(&[IndicatorValue::from(0.0), IndicatorValue::from(0.0), IndicatorValue::from(0.0), IndicatorValue::from(0.0)]).unwrap().round_dp(2),
+            sma.next_chunk(&[
+                IndicatorValue::from(0.0),
+                IndicatorValue::from(0.0),
+                IndicatorValue::from(0.0),
+                IndicatorValue::from(0.0)
+            ])
+            .unwrap()
+            .round_dp(2),
             IndicatorValue::from(0.0)
         );
     }
