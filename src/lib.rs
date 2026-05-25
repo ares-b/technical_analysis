@@ -8,3 +8,6 @@ pub use ohlcv::OHLCV;
 
 mod circular_buffer;
 pub use circular_buffer::CircularBuffer;
+
+#[cfg(feature = "python")]
+mod python;
